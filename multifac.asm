@@ -3,7 +3,7 @@
 .text
 main:
     multifac:
-    li $a0, 170000000  #Multiplicando 
+    li $a0, 170000000 #Multiplicando 
     li $a1, 1000  #Multiplicador
 
     move $s1, $a0
@@ -24,7 +24,7 @@ main:
          jr $ra             #Salto de retorno ao loop
 
     resultado:     
-        srl $t0, $s3, 31 
+        sra $t0, $s3, 31
         mthi $t0            #Esse valor é guardado no registrador alto
         mtlo $s3            #O restante do valor(bits a direita) sao guardadas no registrados baixo
 
