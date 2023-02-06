@@ -1,6 +1,7 @@
+ main:
     multfac:
-        li $a0, -3      
-        li $a1, 4        
+        li $a0, 3   
+        li $a1, 9       
 
         li $t2, 32      
         li $t0, 1
