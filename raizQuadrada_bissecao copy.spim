@@ -4,8 +4,8 @@
     limit2:  .asciiz ")."
     msgResult: .asciiz "A raiz quadrada de "
     msgResult1: .asciiz " eh "
-    msgResult2: .asciiz ", calculada em "
-    msgResult3: .asciiz " iteracoes."
+    msgResult2:  .asciiz ", calculada em "
+    msgResult3:   .asciiz " iteracoes."
 
 .text
 .globl main
@@ -22,9 +22,9 @@ main:
         blt $s1, 1, invalido    #Menor que 1                
         bgt $s1, 16, invalido   #Maior que 16  
 
-        mtc1.d $s1, $f16           #Conversao de Epsilon em double
+        mtc1.d $s1, $f16           #Conversao de Epsilon em float
         cvt.d.w $f16, $f16        
-        mtc1.d $s0, $f0           #Conversao x em double
+        mtc1.d $s0, $f0           #Conversao x em float
         cvt.d.w $f0, $f0
 
         li.d $f8, 10.0  
@@ -118,7 +118,7 @@ main:
         syscall
 
         li $v0, 3
-        mov.d $f12, $f6
+        mov.d $f12, $f18
         syscall
 
         li $v0, 4

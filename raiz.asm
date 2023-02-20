@@ -4,11 +4,12 @@
     limit2:  .asciiz ")."
     msgResult: .asciiz "A raiz quadrada de "
     msgResult1: .asciiz " eh "
-    msgResult2:  .asciiz ", calculada em "
-    msgResult3:   .asciiz " iteracoes."
+    msgResult2: .asciiz ", calculada em "
+    msgResult3: .asciiz " iteracoes."
 
 .text
 main:
+    entrada:
         li $v0, 5       
         syscall
         move $s0, $v0   
@@ -22,15 +23,14 @@ main:
         bgt $s1, 16, invalido     
 
         mtc1.d $s1, $f16           
-        cvt.d.w $f16, $f16        
+        cvt.d.w $f16, $f16 
+
         mtc1.d $s0, $f0           
         cvt.d.w $f0, $f0
 
         li.d $f8, 10.0  
         li.d $f10, 1.0
-
-        li.d $f26, 2.0
-        
+        li.d $f26, 1.0
         li.d $f30, 1.0
 
         li $t1, 0
@@ -66,15 +66,17 @@ main:
         mov.d $f22, $f18         
         mov.d $f2, $f6         
 
-        j epsilon
-        
+        jal epsilon
+        beq $t0, 100, limite
+    j iteracao
 
     invalido:
         li $v0, 4
         la $a0, invalid   
         syscall
 
-        j encerrar
+        li $v0, 10
+        syscall
 
     limite:
         li $v0, 4
@@ -89,7 +91,8 @@ main:
         la $a0, limit2   
         syscall
 
-        j encerrar
+        li $v0, 10
+        syscall
 
     epsilon:
         c.lt.d $f18, $f6
@@ -97,15 +100,15 @@ main:
         sub.d $f4, $f18, $f6
         c.le.d $f4, $f14        
         bc1t saida
-        beq $t0, 100, limite
-        j iteracao   
+
+    retorno:    
+        jr $ra    
 
     troca:
         sub.d $f4, $f6, $f18
         c.le.d $f4, $f14        
         bc1t saida
-        beq $t0, 100, limite
-        j iteracao
+        j retorno
 
     saida:
         li $v0, 4
@@ -136,8 +139,5 @@ main:
         la $a0, msgResult3
         syscall
 
-    encerrar:
         li $v0, 10
         syscall
-
-jr $ra
