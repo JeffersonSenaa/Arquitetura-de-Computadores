@@ -43,29 +43,31 @@ main:
         j tolerancia
 
     iteracao_Inicial:  
-        li.s $f1, 11.0                #Valor inicial de a
+        li.s $f1, 2.0                #Valor inicial de a1
         div.s $f2, $f0, $f1         #Resultado b1. b=(x/a)
     
-    addi $t0, $t0, 1            #Contador de iteracoes
+        li.s $f11, 2.0
+        addi $t0, $t0, 1            #Contador de iteracoes
     iteracao:
         addi $t0, $t0, 1
 
         #Iteracoes para encontrar a raiz
-        add.s $f3, $f1, $f2     #somando a+b
-        div.s $f5, $f3, $f1    #Valor de ai = (a + b)/2
+        add.s $f3, $f1, $f2     #somando a1+b1
+        div.s $f5, $f3, $f11    #Valor de ai = (a + b)/2
 
         div.s $f6, $f0, $f5     #Valor de bi = x / ai
 
         mov.s $f1, $f5          #Valor de a-1 para proxima iteracao
         mov.s $f2, $f6          #Valor de b-1 para proxima iteracao
 
+        beq $t0, 100, limite
+
         #Tolerancia
         sub.s $f4, $f5, $f6
-        #c.le.s $f4, $f9        #Se a-b <= Tolerancia
-        #bc1f saida
-        j saida
+        c.le.s $f4, $f9        #Se a-b <= Tolerancia
+        bc1t saida
 
-        beq $t0, 100, limite
+        
     j iteracao
 
     invalido:
@@ -86,7 +88,7 @@ main:
         syscall
 
         li $v0, 2
-        mov.s $f12, $f6
+        mov.s $f12, $f5
         syscall
 
         li $v0, 4
